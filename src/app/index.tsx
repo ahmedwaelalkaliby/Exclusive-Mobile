@@ -1,98 +1,21 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import Layout from '../components/Layout/Layout';
+import Product from '../components/Product/Product';
+import Sidebar from '../components/Sidebar/Sidebar';
 
 export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
+  const router = useRouter();
+  return <Layout scroll={false}><ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+    <Sidebar />
+    <View style={styles.hero}>
+      <Pressable accessibilityRole="button" accessibilityLabel="Shop the iPhone 14 promotion" onPress={() => router.push('/products')}>
+        <Image source={require('../../assets/images/Frame.png')} resizeMode="contain" accessibilityLabel="iPhone 14 Series, up to 10% off voucher" style={styles.heroImage} />
+      </Pressable>
+    </View>
+    <View style={styles.sectionHead}><Text style={styles.kicker}>Our collection</Text><Text style={styles.sectionTitle}>Explore products</Text></View>
+    <Product horizontal />
+  </ScrollView></Layout>;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
+const styles = StyleSheet.create({ content: { paddingHorizontal: 18, paddingTop: 20, paddingBottom: 28 }, hero: { backgroundColor: '#000', borderRadius: 16, overflow: 'hidden', marginBottom: 26 }, heroImage: { width: '100%', aspectRatio: 875 / 321 }, sectionHead: { gap: 7, marginBottom: 12 }, kicker: { color: '#db4444', fontSize: 13, fontWeight: '700' }, sectionTitle: { color: '#111827', fontSize: 22, fontWeight: '800' } });
