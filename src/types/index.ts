@@ -94,4 +94,4 @@ export interface AuthState {
   isAuthenticated: boolean;
 }
 
-export type Theme = 'light' | 'dark';
+export type Theme = "light" | "dark";

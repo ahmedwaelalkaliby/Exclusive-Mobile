@@ -1,13 +1,20 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { AuthState, User } from '../types';
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { AuthState, User } from "../types";
 
-const initialState: AuthState = { user: null, token: null, isAuthenticated: false };
+const initialState: AuthState = {
+  user: null,
+  token: null,
+  isAuthenticated: false,
+};
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
-    setCredentials(state, action: PayloadAction<{ user: User; token: string }>) {
+    setCredentials(
+      state,
+      action: PayloadAction<{ user: User; token: string }>,
+    ) {
       const { user, token } = action.payload;
       state.user = user;
       state.token = token;
@@ -18,8 +25,14 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
     },
-    hydrateCredentials(_state, action: PayloadAction<{ user: User | null; token: string | null }>) {
-      return { ...action.payload, isAuthenticated: Boolean(action.payload.token) };
+    hydrateCredentials(
+      _state,
+      action: PayloadAction<{ user: User | null; token: string | null }>,
+    ) {
+      return {
+        ...action.payload,
+        isAuthenticated: Boolean(action.payload.token),
+      };
     },
   },
 });

@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { CartProduct, CartState } from '../types';
+import type { CartProduct, CartState } from "../types";
 
 const initialState: CartState = {
   items: [],
@@ -30,7 +30,7 @@ const cartSlice = createSlice({
       state.totalQuantity += quantity;
       state.totalAmount = state.items.reduce(
         (total, item) => total + item.price * item.quantity,
-        0
+        0,
       );
     },
     removeFromCart(state, action: PayloadAction<string>) {
@@ -48,7 +48,7 @@ const cartSlice = createSlice({
       state.totalQuantity--;
       state.totalAmount = state.items.reduce(
         (total, item) => total + item.price * item.quantity,
-        0
+        0,
       );
     },
   },
